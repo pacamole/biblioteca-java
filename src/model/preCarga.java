@@ -1,5 +1,7 @@
 package model;
 
 abstract class preCarga {
-    public void Carregar() {}
+    public void Carregar() {
+
+    }
 }
