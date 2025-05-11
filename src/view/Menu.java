@@ -105,10 +105,18 @@ public class Menu {
         System.out.println("Digite o nome do usuário:");
         String nome = entrada.nextLine().trim();
 
-        System.out.println("Digite o idade do usuário:");
+        System.out.println("Digite o telefone do usuário:");
         int telefone = entrada.nextInt();
+        entrada.nextLine(); 
 
-        this.biblioteca.newUsuario(nome, telefone);
+       System.out.println("Digite o endereço do usuário:");
+       String endereco = entrada.nextLine().trim();
+
+       System.out.println("Digite o Email do usuário:");
+       String email = entrada.nextLine().trim();
+
+
+        this.biblioteca.newUsuario(nome, telefone, endereco, email);
         System.out.println("Usuário cadastrado com sucesso!");
         entrada.nextLine();
         entrada.close();
@@ -169,11 +177,11 @@ public class Menu {
         System.out.println("-- Relatório de Livros");
         System.out.println(
                 "Livros cadastrados: " + this.biblioteca.getLivros().length +
-                        "\nUsuários cadastrados: " + this.biblioteca.getUsuarios().length +
+                        "\nUsuários cadastrados: " + this.biblioteca.getUsuarios().size() +
                         "\nTotal de empréstimos realizados: " + this.biblioteca.getEmprestimos().length +
                         "\nTotal de devoluções realizadas: " + this.biblioteca.getDevolucoes().length +
                         "\nDevoluções atrasadas: " + this.biblioteca.getDevolucoes().length +
                         "\n\nLivros mais populares: " + this.biblioteca.getLivros().length +
-                        "\nUsuários mais ativos: " + this.biblioteca.getUsuarios().length);
+                        "\nUsuários mais ativos: " + this.biblioteca.getUsuarios().size());
     }
 }

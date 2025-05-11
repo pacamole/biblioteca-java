@@ -1,14 +1,15 @@
 package model;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 
 public class Biblioteca {
     private String[] livro;
-    private String[] usuarios;
+    private ArrayList<Usuario> usuarios;
     private String[] emprestimo;
     private String[] devolucoes;
 
-    public Biblioteca(String[] livros, String[] usuarios, String[] emprestimos, String[] devolucoes) {
+    public Biblioteca(String[] livros, ArrayList<Usuario> usuarios, String[] emprestimos, String[] devolucoes) {
         this.livro = livros;
         this.usuarios = usuarios;
         this.emprestimo = emprestimos;
@@ -20,9 +21,9 @@ public class Biblioteca {
         throw new UnsupportedOperationException("Unimplemented method 'newLivro'");
     }
 
-    public void newUsuario(String nome, int telefone) {
-        // TODO implementar código
-        throw new UnsupportedOperationException("Unimplemented method 'newUsuario'");
+    public void newUsuario(String nome, int telefone, String endereco, String email) {
+        Usuario novoUsuario = new Usuario(nome, telefone, endereco, email);
+        usuarios.add(novoUsuario); 
     }
 
     public void newEmprestimo(String livro, String usuarios, LocalDate dataEmprestimo, LocalDate dataDevolucao) {
@@ -44,12 +45,11 @@ public class Biblioteca {
         this.livro = livros;
     }
 
-    public String[] getUsuarios() {
-        // TODO implementar código
-        throw new UnsupportedOperationException("Unimplemented method 'getUsuarios'");
+    public ArrayList<Usuario> getUsuarios() {
+        return usuarios;
     }
 
-    public void setUsuarios(String[] usuarios) {
+    public void setUsuarios(ArrayList<Usuario> usuarios) {
         this.usuarios = usuarios;
     }
 
