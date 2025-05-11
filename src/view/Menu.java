@@ -97,30 +97,54 @@ public class Menu {
         entrada.close();
     }
 
-    public void cadastrarUsuario() {
-        this.limparMenu();
-        System.out.println("-- Cadastrar Usuário");
-        Scanner entrada = new Scanner(System.in);
+public void cadastrarUsuario() {
+    this.limparMenu();
+    System.out.println("-- Cadastrar Usuário");
+    Scanner entrada = new Scanner(System.in);
 
+    String nome;
+    while (true) {
         System.out.println("Digite o nome do usuário:");
-        String nome = entrada.nextLine().trim();
-
-        System.out.println("Digite o telefone do usuário:");
-        int telefone = entrada.nextInt();
-        entrada.nextLine(); 
-
-       System.out.println("Digite o endereço do usuário:");
-       String endereco = entrada.nextLine().trim();
-
-       System.out.println("Digite o Email do usuário:");
-       String email = entrada.nextLine().trim();
-
-
-        this.biblioteca.newUsuario(nome, telefone, endereco, email);
-        System.out.println("Usuário cadastrado com sucesso!");
-        entrada.nextLine();
-        entrada.close();
+        nome = entrada.nextLine().trim();
+        if (!nome.isEmpty()) break;
+        System.out.println("Nome não pode ser vazio. Tente novamente.");
     }
+
+    int telefone;
+    while (true) {
+        System.out.println("Digite o telefone do usuário (somente números):");
+        String telefoneStr = entrada.nextLine().trim();
+        try {
+            telefone = Integer.parseInt(telefoneStr);
+            break;
+        } catch (NumberFormatException e) {
+            System.out.println("Telefone inválido! Digite apenas números.");
+        }
+    }
+
+    String endereco;
+    while (true) {
+        System.out.println("Digite o endereço do usuário:");
+        endereco = entrada.nextLine().trim();
+        if (!endereco.isEmpty()) break;
+        System.out.println("Endereço não pode ser vazio. Tente novamente.");
+    }
+
+    String email;
+    while (true) {
+        System.out.println("Digite o Email do usuário:");
+        email = entrada.nextLine().trim();
+        if (email.contains("@")) break;
+        System.out.println("Email inválido! Deve conter '@'.");
+    }
+
+    this.biblioteca.newUsuario(nome, telefone, endereco, email);
+    System.out.println("Usuário cadastrado com sucesso!");
+    System.out.println("Pressione Enter para continuar...");
+    entrada.nextLine();
+}
+
+
 
     public void emprestarLivro() {
         this.limparMenu();
