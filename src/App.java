@@ -1,4 +1,7 @@
+import java.util.ArrayList;
+
 import model.Biblioteca;
+import model.Usuario;
 import view.Menu;
 
 public class App {
@@ -7,7 +10,9 @@ public class App {
         System.out.println("| Olá usuário! Te desejo boas vindas ao sistema de controle de biblioteca! |");
         System.out.println("+--------------------------------------------------------------------------+");
 
-        Biblioteca biblioteca = new Biblioteca(new String[0], new String[0], new String[0], new String[0]);
+        ArrayList<Usuario> usuarios = new ArrayList<>();
+
+        Biblioteca biblioteca = new Biblioteca(new String[0], usuarios, new String[0], new String[0]);
 
         Menu menu = new Menu(biblioteca);
         menu.iniciarMenu();
