@@ -9,6 +9,9 @@ public class Biblioteca {
     private String[] emprestimo;
     private String[] devolucoes;
 
+    // ✅ Lista de livros usando a nova classe Livro
+    private ArrayList<Livro> livros = new ArrayList<>();
+
     public Biblioteca(String[] livros, ArrayList<Usuario> usuarios, String[] emprestimos, String[] devolucoes) {
         this.livro = livros;
         this.usuarios = usuarios;
@@ -16,9 +19,15 @@ public class Biblioteca {
         this.devolucoes = devolucoes;
     }
 
-    public void newLivro(String titulo, String autor, int anoPublicacao, int numeroExemplares) {
-        // TODO implementar código
-        throw new UnsupportedOperationException("Unimplemented method 'newLivro'");
+    // ✅ Método para adicionar um livro
+    public void newLivro(String titulo, String autor, int anoPublicacao, int numeroExemplares, String categoria) {
+        Livro novoLivro = new Livro(titulo, autor, anoPublicacao, numeroExemplares, categoria);
+        livros.add(novoLivro);
+    }
+
+    // ✅ Método para retornar os livros cadastrados
+    public ArrayList<Livro> getLivros() {
+        return livros;
     }
 
     public void newUsuario(String nome, int telefone, String endereco, String email) {
@@ -36,7 +45,7 @@ public class Biblioteca {
         throw new UnsupportedOperationException("Unimplemented method 'newDevolucao'");
     }
 
-    public String[] getLivros() {
+    public String[] getLivrosAntigo() {
         // TODO implementar código
         throw new UnsupportedOperationException("Unimplemented method 'getLivros'");
     }
@@ -59,7 +68,7 @@ public class Biblioteca {
     }
 
     public void setEmprestimos(String[] emprestimos) {
-        this.livro = emprestimos;
+        this.emprestimo = emprestimos;
     }
 
     public String[] getDevolucoes() {
@@ -68,7 +77,6 @@ public class Biblioteca {
     }
 
     public void setDevolucoes(String[] devolucoes) {
-        this.livro = devolucoes;
+        this.devolucoes = devolucoes;
     }
-
 }

@@ -5,6 +5,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 
 import model.Biblioteca;
+import model.Livro; // Adicionando a importação da classe Livro
 
 public class Menu {
 
@@ -65,7 +66,6 @@ public class Menu {
                 case 6:
                     System.out.println("Saindo...");
                     entrada.close();
-
                     break;
                 default:
                     mensagem = "Opção inválida! Tente novamente.";
@@ -91,60 +91,61 @@ public class Menu {
         System.out.println("Digite o número de exemplares disponíveis:");
         int numeroExemplares = entrada.nextInt();
 
-        this.biblioteca.newLivro(titulo, autor, anoPublicacao, numeroExemplares);
+        // Criando o objeto Livro e adicionando à biblioteca
+        Livro livro = new Livro(titulo, autor, anoPublicacao, numeroExemplares);
+        this.biblioteca.addLivro(livro);
+        
         System.out.println("Livro cadastrado com sucesso!");
         entrada.nextLine();
         entrada.close();
     }
 
-public void cadastrarUsuario() {
-    this.limparMenu();
-    System.out.println("-- Cadastrar Usuário");
-    Scanner entrada = new Scanner(System.in);
+    public void cadastrarUsuario() {
+        this.limparMenu();
+        System.out.println("-- Cadastrar Usuário");
+        Scanner entrada = new Scanner(System.in);
 
-    String nome;
-    while (true) {
-        System.out.println("Digite o nome do usuário:");
-        nome = entrada.nextLine().trim();
-        if (!nome.isEmpty()) break;
-        System.out.println("Nome não pode ser vazio. Tente novamente.");
-    }
-
-    int telefone;
-    while (true) {
-        System.out.println("Digite o telefone do usuário (somente números):");
-        String telefoneStr = entrada.nextLine().trim();
-        try {
-            telefone = Integer.parseInt(telefoneStr);
-            break;
-        } catch (NumberFormatException e) {
-            System.out.println("Telefone inválido! Digite apenas números.");
+        String nome;
+        while (true) {
+            System.out.println("Digite o nome do usuário:");
+            nome = entrada.nextLine().trim();
+            if (!nome.isEmpty()) break;
+            System.out.println("Nome não pode ser vazio. Tente novamente.");
         }
+
+        int telefone;
+        while (true) {
+            System.out.println("Digite o telefone do usuário (somente números):");
+            String telefoneStr = entrada.nextLine().trim();
+            try {
+                telefone = Integer.parseInt(telefoneStr);
+                break;
+            } catch (NumberFormatException e) {
+                System.out.println("Telefone inválido! Digite apenas números.");
+            }
+        }
+
+        String endereco;
+        while (true) {
+            System.out.println("Digite o endereço do usuário:");
+            endereco = entrada.nextLine().trim();
+            if (!endereco.isEmpty()) break;
+            System.out.println("Endereço não pode ser vazio. Tente novamente.");
+        }
+
+        String email;
+        while (true) {
+            System.out.println("Digite o Email do usuário:");
+            email = entrada.nextLine().trim();
+            if (email.contains("@")) break;
+            System.out.println("Email inválido! Deve conter '@'.");
+        }
+
+        this.biblioteca.newUsuario(nome, telefone, endereco, email);
+        System.out.println("Usuário cadastrado com sucesso!");
+        System.out.println("Pressione Enter para continuar...");
+        entrada.nextLine();
     }
-
-    String endereco;
-    while (true) {
-        System.out.println("Digite o endereço do usuário:");
-        endereco = entrada.nextLine().trim();
-        if (!endereco.isEmpty()) break;
-        System.out.println("Endereço não pode ser vazio. Tente novamente.");
-    }
-
-    String email;
-    while (true) {
-        System.out.println("Digite o Email do usuário:");
-        email = entrada.nextLine().trim();
-        if (email.contains("@")) break;
-        System.out.println("Email inválido! Deve conter '@'.");
-    }
-
-    this.biblioteca.newUsuario(nome, telefone, endereco, email);
-    System.out.println("Usuário cadastrado com sucesso!");
-    System.out.println("Pressione Enter para continuar...");
-    entrada.nextLine();
-}
-
-
 
     public void emprestarLivro() {
         this.limparMenu();
@@ -169,7 +170,6 @@ public void cadastrarUsuario() {
         this.biblioteca.newEmprestimo(livro, usuario, dataEmprestimo, dataDevolucao);
         System.out.println("Empréstimo realizado com sucesso!");
         entrada.nextLine();
-        entrada.close();
     }
 
     public void devolverLivro() {
@@ -193,19 +193,18 @@ public void cadastrarUsuario() {
         this.biblioteca.newDevolucao(titulo, usuario, dataDevolucao);
         System.out.println("Devolução realizada com sucesso!");
         entrada.nextLine();
-        entrada.close();
     }
 
     public void relatorioLivros() {
         this.limparMenu();
         System.out.println("-- Relatório de Livros");
         System.out.println(
-                "Livros cadastrados: " + this.biblioteca.getLivros().length +
+                "Livros cadastrados: " + this.biblioteca.getLivros().size() +
                         "\nUsuários cadastrados: " + this.biblioteca.getUsuarios().size() +
                         "\nTotal de empréstimos realizados: " + this.biblioteca.getEmprestimos().length +
                         "\nTotal de devoluções realizadas: " + this.biblioteca.getDevolucoes().length +
                         "\nDevoluções atrasadas: " + this.biblioteca.getDevolucoes().length +
-                        "\n\nLivros mais populares: " + this.biblioteca.getLivros().length +
+                        "\n\nLivros mais populares: " + this.biblioteca.getLivros().size() +
                         "\nUsuários mais ativos: " + this.biblioteca.getUsuarios().size());
     }
 }
