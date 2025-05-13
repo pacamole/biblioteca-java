@@ -10,9 +10,11 @@ import model.Livro; // Adicionando a importação da classe Livro
 public class Menu {
 
     Biblioteca biblioteca;
+    Scanner entrada;
 
-    public Menu(Biblioteca biblioteca) {
+    public Menu(Biblioteca biblioteca, Scanner entrada) {
         this.biblioteca = biblioteca;
+        this.entrada = entrada;
     }
 
     private void limparMenu() {
@@ -30,46 +32,53 @@ public class Menu {
     }
 
     public void iniciarMenu() {
-        Scanner entrada = new Scanner(System.in);
         int opcao = 0;
         String mensagem = "";
 
         while (opcao != 6) {
+            opcao = 0;
             this.limparMenu();
+            this.entrada.reset();
 
             if (!mensagem.isEmpty()) {
                 System.out.println(mensagem);
                 mensagem = "";
             }
-
             this.mostrarMenu();
 
             System.out.print("Escolha uma opção: ");
-            opcao = entrada.nextInt();
+            opcao = this.entrada.nextInt();
 
-            switch (opcao) {
-                case 1:
-                    this.cadastrarLivro();
-                    break;
-                case 2:
-                    this.cadastrarUsuario();
-                    break;
-                case 3:
-                    this.emprestarLivro();
-                    break;
-                case 4:
-                    this.devolverLivro();
-                    break;
-                case 5:
-                    this.relatorioLivros();
-                    break;
-                case 6:
-                    System.out.println("Saindo...");
-                    entrada.close();
-                    break;
-                default:
-                    mensagem = "Opção inválida! Tente novamente.";
-                    break;
+            try {
+                switch (opcao) {
+                    case 1:
+                        this.entrada.reset();
+                        this.cadastrarLivro();
+                        break;
+                    case 2:
+                        this.entrada.reset();
+                        this.cadastrarUsuario();
+                        break;
+                    case 3:
+                        this.entrada.reset();
+                        this.emprestarLivro();
+                        break;
+                    case 4:
+                        this.entrada.reset();
+                        this.devolverLivro();
+                        break;
+                    case 5:
+                        this.entrada.reset();
+                        this.relatorioLivros();
+                        break;
+                    case 6:
+                        System.out.println("Saindo...");
+                        break;
+                    default:
+                        throw new Exception("Opção inválida! Tente novamente.");
+                }
+            } catch (Exception e) {
+                mensagem = e.toString();
             }
         }
     }
@@ -77,46 +86,45 @@ public class Menu {
     public void cadastrarLivro() {
         this.limparMenu();
         System.out.println("-- Cadastrar Livro");
-        Scanner entrada = new Scanner(System.in);
 
         System.out.println("Digite o título do livro:");
-        String titulo = entrada.nextLine().trim();
+        String titulo = this.entrada.nextLine().trim();
 
         System.out.println("Digite o autor do livro:");
-        String autor = entrada.nextLine().trim();
+        String autor = this.entrada.nextLine().trim();
 
         System.out.println("Digite o ano de publicação do livro:");
-        int anoPublicacao = entrada.nextInt();
+        int anoPublicacao = this.entrada.nextInt();
 
         System.out.println("Digite o número de exemplares disponíveis:");
-        int numeroExemplares = entrada.nextInt();
+        int numeroExemplares = this.entrada.nextInt();
 
-        // Criando o objeto Livro e adicionando à biblioteca
-        Livro livro = new Livro(titulo, autor, anoPublicacao, numeroExemplares);
-        this.biblioteca.addLivro(livro);
-        
+        System.out.println("Digite a categoria do livro:");
+        String categoria = this.entrada.nextLine().trim();
+
+        this.biblioteca.newLivro(titulo, autor, anoPublicacao, numeroExemplares, categoria);
+
         System.out.println("Livro cadastrado com sucesso!");
-        entrada.nextLine();
-        entrada.close();
+        this.entrada.nextLine();
     }
 
     public void cadastrarUsuario() {
         this.limparMenu();
         System.out.println("-- Cadastrar Usuário");
-        Scanner entrada = new Scanner(System.in);
 
         String nome;
         while (true) {
             System.out.println("Digite o nome do usuário:");
-            nome = entrada.nextLine().trim();
-            if (!nome.isEmpty()) break;
+            nome = this.entrada.nextLine().trim();
+            if (!nome.isEmpty())
+                break;
             System.out.println("Nome não pode ser vazio. Tente novamente.");
         }
 
         int telefone;
         while (true) {
             System.out.println("Digite o telefone do usuário (somente números):");
-            String telefoneStr = entrada.nextLine().trim();
+            String telefoneStr = this.entrada.nextLine().trim();
             try {
                 telefone = Integer.parseInt(telefoneStr);
                 break;
@@ -128,75 +136,78 @@ public class Menu {
         String endereco;
         while (true) {
             System.out.println("Digite o endereço do usuário:");
-            endereco = entrada.nextLine().trim();
-            if (!endereco.isEmpty()) break;
+            endereco = this.entrada.nextLine().trim();
+            if (!endereco.isEmpty())
+                break;
             System.out.println("Endereço não pode ser vazio. Tente novamente.");
         }
 
         String email;
         while (true) {
             System.out.println("Digite o Email do usuário:");
-            email = entrada.nextLine().trim();
-            if (email.contains("@")) break;
+            email = this.entrada.nextLine().trim();
+            if (email.contains("@"))
+                break;
             System.out.println("Email inválido! Deve conter '@'.");
         }
 
         this.biblioteca.newUsuario(nome, telefone, endereco, email);
         System.out.println("Usuário cadastrado com sucesso!");
         System.out.println("Pressione Enter para continuar...");
-        entrada.nextLine();
+        this.entrada.nextLine();
     }
 
     public void emprestarLivro() {
         this.limparMenu();
         System.out.println("-- Emprestar Livro");
-        Scanner entrada = new Scanner(System.in);
+
         DateTimeFormatter formatoHorario = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
         System.out.println("Digite o título do livro:");
-        String livro = entrada.nextLine().trim();
+        String livro = this.entrada.nextLine().trim();
 
         System.out.println("Digite o nome do usuário:");
-        String usuario = entrada.nextLine().trim();
+        String usuario = this.entrada.nextLine().trim();
 
         System.out.println("Digite a data de empréstimo (dd/MM/yyyy):");
-        String dataEmprestimoStr = entrada.nextLine().trim();
+        String dataEmprestimoStr = this.entrada.nextLine().trim();
         LocalDate dataEmprestimo = LocalDate.parse(dataEmprestimoStr, formatoHorario);
 
         System.out.println("Digite a data de devolução (dd/MM/yyyy):");
-        String dataDevolucaoStr = entrada.nextLine().trim();
+        String dataDevolucaoStr = this.entrada.nextLine().trim();
         LocalDate dataDevolucao = LocalDate.parse(dataDevolucaoStr, formatoHorario);
 
         this.biblioteca.newEmprestimo(livro, usuario, dataEmprestimo, dataDevolucao);
         System.out.println("Empréstimo realizado com sucesso!");
-        entrada.nextLine();
+        this.entrada.nextLine();
+        ;
     }
 
     public void devolverLivro() {
         this.limparMenu();
         System.out.println("-- Devolver Livro");
-        Scanner entrada = new Scanner(System.in);
         DateTimeFormatter formatoHorario = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
         System.out.println("Digite o título do livro a devolver:");
-        String titulo = entrada.nextLine().trim();
+        String titulo = this.entrada.nextLine().trim();
 
         System.out.println("Digite o nome do usuário que vai devolver:");
-        String usuario = entrada.nextLine().trim();
+        String usuario = this.entrada.nextLine().trim();
 
         System.out.println("Digite a data de devolução (dd/MM/yyyy). Se for horário atual, pressione 'Enter':");
-        String dataDevolucaoStr = entrada.nextLine().trim();
+        String dataDevolucaoStr = this.entrada.nextLine().trim();
         LocalDate dataDevolucao = dataDevolucaoStr.isEmpty()
                 ? LocalDate.now()
                 : LocalDate.parse(dataDevolucaoStr, formatoHorario);
 
         this.biblioteca.newDevolucao(titulo, usuario, dataDevolucao);
         System.out.println("Devolução realizada com sucesso!");
-        entrada.nextLine();
+        this.entrada.nextLine();
     }
 
     public void relatorioLivros() {
         this.limparMenu();
+
         System.out.println("-- Relatório de Livros");
         System.out.println(
                 "Livros cadastrados: " + this.biblioteca.getLivros().size() +
@@ -206,5 +217,10 @@ public class Menu {
                         "\nDevoluções atrasadas: " + this.biblioteca.getDevolucoes().length +
                         "\n\nLivros mais populares: " + this.biblioteca.getLivros().size() +
                         "\nUsuários mais ativos: " + this.biblioteca.getUsuarios().size());
+
+        System.out.println("\nPressione Enter para continuar...");
+        this.entrada.reset();
+        this.entrada.nextLine();
+        this.entrada.nextLine();
     }
 }

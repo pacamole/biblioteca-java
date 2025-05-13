@@ -1,22 +1,28 @@
-import java.util.ArrayList;
+import java.util.Scanner;
 
 import model.Biblioteca;
-import model.Usuario;
+import model.preCarga;
 import view.Menu;
 
 public class App {
     public static void main(String[] args) throws Exception {
-        System.out.println("+--------------------------------------------------------------------------+");
+        Scanner entrada = new Scanner(System.in);
+        Biblioteca biblioteca = new Biblioteca();
+        new preCarga() {
+        }.Carregar(biblioteca);
+
+
+        System.out.println("\n\n+--------------------------------------------------------------------------+");
         System.out.println("| Olá usuário! Te desejo boas vindas ao sistema de controle de biblioteca! |");
         System.out.println("+--------------------------------------------------------------------------+");
+        System.out.println("\nPressione enter para continuar...");
+        entrada.nextLine();
+        entrada.reset();
 
-        ArrayList<Usuario> usuarios = new ArrayList<>();
 
-        Biblioteca biblioteca = new Biblioteca(new String[0], usuarios, new String[0], new String[0]);
-
-        Menu menu = new Menu(biblioteca);
+        Menu menu = new Menu(biblioteca, entrada);
         menu.iniciarMenu();
 
-        System.out.println("Obrigado por usar o sistema de controle de biblioteca!");
+        System.out.println("Obrigado por usar o sistema de controle da biblioteca!");
     }
 }
